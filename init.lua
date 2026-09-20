@@ -3,6 +3,7 @@ require("config.lazy")
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+vim.opt.smartindent = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -13,7 +14,10 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
 -- LSP setup
 
-vim.lsp.config("rust-analyzer", {
+local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+vim.lsp.config("rust_analyzer", {
+  capabilities = capabilities,
   settings = {
     ["rust-analyzer"] = {
       checkOnSave = {
@@ -22,6 +26,8 @@ vim.lsp.config("rust-analyzer", {
     }
   }
 })
+
+vim.lsp.enable("rust_analyzer")
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
