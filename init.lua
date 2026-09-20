@@ -11,6 +11,34 @@ vim.keymap.set("n", "<leader>c", ":bdelete<CR>", { desc = "Close buffer" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
+-- LSP setup
+
+vim.lsp.config("rust-analyzer", {
+  settings = {
+    ["rust-analyzer"] = {
+      checkOnSave = {
+        command = "clippy"
+      }
+    }
+  }
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+    if client and client.server_capabilites.documentFormattingProvider then
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = ev.buf,
+        callback = function()
+          vim.lsp.buf.format({ async = false, id = ev.data.client_id })
+        end,
+      })
+    end
+  end,
+})
+
 local indent_group = vim.api.nvim_create_augroup("CustomIndent", { clear = true })
 
 -- 2 spaces
