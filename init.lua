@@ -8,9 +8,13 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 
+-- Keymaps
+
 vim.keymap.set("n", "<leader>c", ":bdelete<CR>", { desc = "Close buffer" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+vim.keymap.set("n", "<leader>e", "<Cmd>Neotree toggle<CR>", { desc = "Toggle neotree" })
 
 -- LSP setup
 
