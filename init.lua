@@ -29,19 +29,13 @@ vim.lsp.config("rust_analyzer", {
 
 vim.lsp.enable("rust_analyzer")
 
-vim.api.nvim_create_autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+local formatting = vim.api.nvim_create_augroup("AutoFormatting", {})
 
-    if client and client.server_capabilites.documentFormattingProvider then
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = ev.buf,
-        callback = function()
-          vim.lsp.buf.format({ async = false, id = ev.data.client_id })
-        end,
-      })
-    end
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.rs",
+  group = formatting,
+  callback = function()
+    vim.lsp.buf.format({ async = false })
   end,
 })
 
