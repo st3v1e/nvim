@@ -8,30 +8,15 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 
+vim.diagnostic.config({ virtual_text = true })
+
 -- Keymaps
 
-vim.keymap.set("n", "<leader>c", ":bdelete<CR>", { desc = "Close buffer" })
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-
-vim.keymap.set("n", "<leader>e", "<Cmd>Neotree toggle<CR>", { desc = "Toggle neotree" })
+require("config.keys")
 
 -- LSP setup
 
-local capabilities = require("blink.cmp").get_lsp_capabilities()
-
-vim.lsp.config("rust_analyzer", {
-  capabilities = capabilities,
-  settings = {
-    ["rust-analyzer"] = {
-      checkOnSave = {
-        command = "clippy"
-      }
-    }
-  }
-})
-
-vim.lsp.enable("rust_analyzer")
+require("config.lsp")
 
 local formatting = vim.api.nvim_create_augroup("AutoFormatting", {})
 
